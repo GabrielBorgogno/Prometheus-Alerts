@@ -1,0 +1,11 @@
+groups:
+- name: CPU usage
+  rules:
+  - alert: HighCPUUsage
+    expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: High CPU usage detected on {{ $labels.instance }}
+      description: CPU usage is above 90% for more than 5 minutes.
